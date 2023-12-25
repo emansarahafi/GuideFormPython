@@ -135,8 +135,8 @@ def telegram():
        print("Client Created")
        me = await client.get_me()
 
-       my_channel = await client.get_entity('Survey2022Channel')
-       messages = await client.get_messages('Survey2022Channel')
+       my_channel = await client.get_entity('INSERT_CHAT_ID_HERE')
+       messages = await client.get_messages('INSERT_CHAT_ID_HERE')
        message = messages[0]
        textmsg = print(message.raw_text)  # raw_text for no formatting
 
