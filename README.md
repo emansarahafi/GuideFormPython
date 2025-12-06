@@ -71,7 +71,13 @@ pip install pillow matplotlib numpy telethon configparser
    - `GuideForm.ico` - Application icon (optional)
    - `GuideForm.pdf` - Company brochure (optional)
 
-4. Configure Telegram API credentials in `config.ini`:
+4. Create your `config.ini` file from the template:
+
+```bash
+cp config.ini.template config.ini
+```
+
+5. Configure Telegram API credentials in `config.ini`:
 
 ```ini
 [Telegram]
@@ -81,10 +87,10 @@ phone = YOUR_PHONE_NUMBER
 username = YOUR_USERNAME
 ```
 
-5. Update Telegram channel ID in `Interface.py`:
+6. Update Telegram channel ID in `Interface.py`:
    - Find and replace `INSERT_CHAT_ID_HERE` with your actual Telegram channel ID (appears twice in the code)
 
-6. Set up local web server for survey forms (if using local hosting)
+7. Set up local web server for survey forms (if using local hosting)
 
 ## Usage
 
@@ -119,14 +125,15 @@ The application generates various types of charts:
 ```
 GuideFormPython/
 │
-├── Interface.py          # Main application file
-├── config.ini            # Telegram API configuration (excluded from git)
+├── Interface.py           # Main application file
+├── config.ini.template    # Template for Telegram API configuration
+├── config.ini            # Your API credentials (excluded from git, create from template)
 ├── README.md             # Project documentation
 ├── .gitignore            # Git ignore rules
 │
 ├── resources/            # Static resources
-│   ├── GuideForm.png     # Application logo
-│   ├── GuideForm.ico     # Application icon
+│   ├── GuideForm.png     # Application logo (excluded from git)
+│   ├── GuideForm.ico     # Application icon (excluded from git)
 │   ├── GuideForm.pdf     # Company brochure
 │   └── README.md         # Resources directory documentation
 │
