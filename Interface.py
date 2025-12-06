@@ -26,6 +26,15 @@ from tkinter import *
 from tkinter.ttk import *
 from time import strftime
 
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+RESOURCES_DIR = os.path.join(SCRIPT_DIR, 'resources')
+DATA_DIR = os.path.join(SCRIPT_DIR, 'data')
+
+# Create directories if they don't exist
+os.makedirs(RESOURCES_DIR, exist_ok=True)
+os.makedirs(DATA_DIR, exist_ok=True)
+
 #Create window
 root = tk.Tk()
 
@@ -45,7 +54,12 @@ frame.pack()
 frame.place(anchor='n', relx=0.5)
 
 # Create an object of tkinter ImageTk
-img= PIL.Image.open("/Users/emansarahafi/Downloads/Telegram Files for Project/GuideForm.png")
+logo_path = os.path.join(RESOURCES_DIR, 'GuideForm.png')
+if os.path.exists(logo_path):
+    img = PIL.Image.open(logo_path)
+else:
+    # Create a placeholder if logo doesn't exist
+    img = PIL.Image.new('RGB', (200, 200), color='#DCDCDC')
 
 #Resize the Image using resize method
 resized_image= img.resize((200,200), PIL.Image.Resampling.LANCZOS)
@@ -56,7 +70,9 @@ label = Label(frame, image = new_image)
 label.pack()
  
 #Add the window's icon 
-root.iconbitmap("/Users/emansarahafi/Downloads/Telegram Files for Project/GuideForm.ico")
+icon_path = os.path.join(RESOURCES_DIR, 'GuideForm.ico')
+if os.path.exists(icon_path):
+    root.iconbitmap(icon_path)
 
 #Add the window's background 
 root.config(background='#DCDCDC')
@@ -116,7 +132,8 @@ def telegram():
 
    # Reading Configs
    config = configparser.ConfigParser()
-   config.read("/Users/emansarahafi/Downloads/Telegram Files for Project/config.ini")
+   config_path = os.path.join(SCRIPT_DIR, 'config.ini')
+   config.read(config_path)
 
    # Setting configuration values
    api_id = config['Telegram']['api_id']
@@ -161,7 +178,8 @@ def telegram():
                {"id": participant.id, "first_name": participant.first_name, "last_name": participant.last_name,
                 "user": participant.username, "phone": participant.phone, "is_bot": participant.bot})
 
-       with open('user_data.json', 'w') as outfile:
+       user_data_path = os.path.join(DATA_DIR, 'user_data.json')
+       with open(user_data_path, 'w') as outfile:
            json.dump(all_user_details, outfile)
 
    # For Messages
@@ -193,14 +211,16 @@ def telegram():
            if total_count_limit != 0 and total_messages >= total_count_limit:
                break
 
-       with open('channel_messages.json', 'w') as outfile:
+       channel_messages_path = os.path.join(DATA_DIR, 'channel_messages.json')
+       with open(channel_messages_path, 'w') as outfile:
            json.dump(all_messages, outfile, cls = DateTimeEncoder)
 
        # Convert JSON file to TXT
-       filename = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.json"
+       filename = os.path.join(DATA_DIR, 'channel_messages.json')
+       txt_filename = os.path.join(DATA_DIR, 'channel_messages.txt')
        
-       if os.path.exists("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"):
-           os.remove("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+       if os.path.exists(txt_filename):
+           os.remove(txt_filename)
            with open(filename, 'r') as fr:
                pre_ = fr.read()
                lines = pre_.split('\n')
@@ -223,14 +243,15 @@ def telegram():
 def agegraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
 
@@ -246,14 +267,15 @@ def agegraphs():
 def gendergraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
 
         plt.figure()
 
@@ -269,14 +291,15 @@ def gendergraphs():
 def unigraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
 
         plt.figure()
 
@@ -295,14 +318,15 @@ def unigraphs():
 def majorgraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
         
@@ -321,14 +345,15 @@ def majorgraphs():
 def nextstepgraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
 
@@ -346,14 +371,15 @@ def nextstepgraphs():
 def langgraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
 
@@ -371,14 +397,15 @@ def langgraphs():
 def wheregraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
         
@@ -396,14 +423,15 @@ def wheregraphs():
 def timegraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
         
@@ -419,14 +447,15 @@ def timegraphs():
 def levelgraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
         
@@ -442,14 +471,15 @@ def levelgraphs():
 def ansgraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
         ans = ['Yes', 'No', 'Maybe']
@@ -464,14 +494,15 @@ def ansgraphs():
 def jobgraphs():
     #Read TXT file
     # check if size of file is 0
-    file_path = "/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt"
+    file_path = os.path.join(DATA_DIR, 'channel_messages.txt')
     if os.stat(file_path).st_size == 0:
         errormsg = Label(root,text = "Data in unavailable at the moment", foreground="red",background='#DCDCDC', font=("helvetica", 10))
         errormsg.place(relx=0.75, rely=0.7, anchor=CENTER)
     else:
         #Read TXT file and graph the data
-        fid=open("/Users/emansarahafi/Downloads/Telegram Files for Project/channel_messages.txt")
+        fid=open(file_path)
         file = fid.read()
+        fid.close()
         
         plt.figure()
         
