@@ -193,7 +193,7 @@ Tashfeen Engineering Solutions is a geotechnical, civil engineering, and softwar
 
 ## License
 
-© 2022 Tashfeen Engineering Solutions. All rights reserved.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
