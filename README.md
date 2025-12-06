@@ -8,6 +8,8 @@ GuideForm is a desktop application built with Python Tkinter for surveying senio
 
 The interface provides comprehensive functionality for accessing surveys, company information, and visualizing collected data through interactive graphs. More details can be found [by clicking here](https://www.geotashfeen.tech/Data_Extarction.php).
 
+**Related Project**: [GuideForm Website](https://github.com/emansarahafi/GuideFormWebsite) - Web interface for the GuideForm survey system.
+
 ## Important Warnings
 
 **Security Notice**: Never commit your `config.ini` file with real API credentials to version control. The `.gitignore` file is configured to exclude it.
@@ -181,10 +183,6 @@ You can use any local web server (Apache, Nginx, Python's http.server, etc.)
 ## About Tashfeen Engineering Solutions
 
 Tashfeen Engineering Solutions is a geotechnical, civil engineering, and software development company established in 2020. The company has worked on several projects on national and international scales and is expanding its operations to the Middle East, beginning with Bahrain.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
